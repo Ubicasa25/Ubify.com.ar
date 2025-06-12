@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ubify | Próximamente</title>
+  <meta name="description" content="Ubify - La nueva forma de ver y publicar propiedades en Villa Ángela.">
+  <link rel="icon" type="image/png" href="https://cdn.jsdelivr.net/gh/Ubicasa25/img/hogar-pestaña2.webp" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      font-family: 'Outfit', sans-serif;
+    }
+    .fade-in {
+      animation: fadeIn 1.5s ease-out forwards;
+    }
+    .fade-delay {
+      animation: fadeIn 1.5s ease-out forwards;
+      animation-delay: 0.5s;
+    }
+    .fade-delay-2 {
+      animation: fadeIn 1.5s ease-out forwards;
+      animation-delay: 1s;
+    }
+    @keyframes fadeIn {
+      0% { opacity: 0; transform: translateY(20px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body class="bg-gradient-to-b from-[#0f172a] via-[#1e293b] to-[#0f172a] text-white flex flex-col items-center justify-center min-h-screen text-center px-4">
+
+  <!-- Logo -->
+  <img src="logo-negro-rem.png" alt="Logo Ubify" class="w-48 md:w-64 h-auto mb-10 fade-in drop-shadow-xl" />
+
+  <!-- Contenido -->
+  <div class="max-w-2xl">
+    <h1 class="text-4xl md:text-5xl font-bold mb-4 fade-in flex items-center justify-center gap-2">
+      🏠 Muy pronto <span class="text-yellow-400">Ubify</span>
+    </h1>
+
+    <!-- PRIMER MES GRATIS -->
+    <div class="fade-delay bg-green-500 text-white inline-block px-4 py-1 rounded-full text-sm font-semibold mb-6 shadow-md animate-bounce">
+      🎉 ¡PRIMER MES GRATIS!
+    </div>
+
+    <p class="text-lg md:text-xl mb-4 text-gray-100 fade-delay">
+      La mejor forma de <strong>ver y publicar propiedades</strong> en Villa Ángela.
+    </p>
+
+    <p class="text-base text-gray-400 mb-8 fade-delay-2">
+      Mucha visibilidad. Sin complicaciones. 100% digital. Totalmente a tu medida.
+    </p>
+
+    <a href="https://wa.me/549XXXXXXXXXX"
+       class="fade-delay-2 bg-yellow-400 hover:bg-yellow-300 text-black font-semibold py-4 px-8 rounded-full transition duration-300 shadow-xl transform hover:scale-105 inline-flex items-center gap-2 text-lg">
+       📲 ¡Anticipate y sé el primero en publicar!
+    </a>
+
+    <p class="mt-10 text-sm text-gray-500 fade-delay-2">#Ubify está en construcción. ¡Pronto online!</p>
+  </div>
+
+</body>
+</html>
