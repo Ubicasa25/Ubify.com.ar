@@ -37,7 +37,6 @@
       0% { opacity: 0; transform: translateY(20px); }
       100% { opacity: 1; transform: translateY(0); }
     }
-    /* Estilos específicos para el botón en móviles */
     @media (max-width: 640px) {
       .whatsapp-button {
         padding: 0.75rem 1.5rem;
@@ -52,7 +51,7 @@
     }
   </style>
 </head>
-<body class="bg-gradient-to-b from-[#0f172a] via-[#1e293b] to-[#0f172a] text-white flex flex-col items-center justify-center min-h-screen text-center px-4">
+<body class="bg-gradient-to-b from-[#0f172a] via-[#1e293b] to-[#0f172a] text-white flex flex-col items-center justify-start min-h-screen text-center px-4 overflow-y-auto">
 
   <!-- Logo -->
   <img src="logo-negro-rem.png" alt="Logo Ubify" class="w-48 md:w-64 h-auto mb-6 md:mb-10 fade-in drop-shadow-xl" />
@@ -63,7 +62,6 @@
       🏠 Muy pronto <span class="text-yellow-400">Ubify</span>
     </h1>
 
-    <!-- PRIMER MES GRATIS -->
     <div class="fade-delay bg-green-500 text-white inline-block px-3 py-1 md:px-4 md:py-1 rounded-full text-xs md:text-sm font-semibold mb-4 md:mb-6 shadow-md animate-bounce">
       🎉 ¡PRIMER MES GRATIS!
     </div>
@@ -89,9 +87,20 @@
     <p class="text-xs text-gray-400 mt-2 md:mt-3 fade-delay-2 italic">
       * Serás redirigido a WhatsApp para consultar cómo publicar tu propiedad.
     </p>
+<div class="mt-4">
+  <a href="faq.html"
+     class="fade-delay-2 border border-yellow-400 text-yellow-400 hover:bg-yellow-400 hover:text-[#0f172a] font-semibold py-2 px-4 rounded-full transition duration-300 inline-block">
+    Preguntas frecuentes
+  </a>
+</div>
 
     <p class="mt-6 md:mt-10 text-xs md:text-sm text-gray-500 fade-delay-2">#Ubify está en construcción. ¡Próximamente online!</p>
   </div>
+
+
+  </div>
+</div>
+
 
 </body>
 </html>
