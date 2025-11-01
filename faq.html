@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ubify | Preguntas Frecuentes</title>
+  <meta name="description" content="Preguntas frecuentes sobre cómo funciona Ubify, beneficios y publicaciones.">
+  <link rel="icon" type="image/png" href="logo-negro-sinfondo-pestaña.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      font-family: 'Outfit', sans-serif;
+    }
+    
+    /* Estilos para el modal de imagen */
+    .image-modal {
+      transition: opacity 0.3s ease;
+    }
+    
+    .image-modal-content {
+      transition: transform 0.3s ease;
+      transform: scale(0.9);
+    }
+    
+    .image-modal.active .image-modal-content {
+      transform: scale(1);
+    }
+    
+    /* Efecto de zoom en las imágenes */
+    .zoomable-image {
+      transition: transform 0.3s ease;
+      cursor: zoom-in;
+    }
+    
+    .zoomable-image:hover {
+      transform: scale(1.02);
+    }
+    
+    /* Estilos para navegación entre imágenes */
+    .nav-button {
+      background-color: rgba(0, 0, 0, 0.5);
+      transition: background-color 0.3s ease;
+    }
+    
+    .nav-button:hover {
+      background-color: rgba(0, 0, 0, 0.7);
+    }
+    
+    /* Mejoras de responsividad */
+    @media (max-width: 640px) {
+      /* Reducir zoom general en móviles */
+      body {
+        font-size: 14px;
+        line-height: 1.4;
+      }
+      
+      .mobile-stack {
+        flex-direction: column;
+        gap: 0.5rem;
+      }
+      
+      .mobile-full-width {
+        width: 100%;
+      }
+      
+      .mobile-text-sm {
+        font-size: 0.75rem;
+      }
+      
+      .mobile-p-2 {
+        padding: 0.5rem;
+      }
+      
+      .mobile-gap-2 {
+        gap: 0.5rem;
+      }
+      
+      /* Imágenes más pequeñas en móvil */
+      .mobile-image-small {
+        width: 100%;
+        max-width: 200px;
+        height: auto;
+      }
+      
+      /* Modal más compacto en móvil */
+      .mobile-modal {
+        margin: 0.5rem;
+        max-height: calc(100vh - 1rem);
+      }
+      
+      /* Botones más compactos para móvil */
+      .mobile-touch-button {
+        min-height: 36px;
+        padding: 0.5rem 0.75rem;
+        font-size: 0.875rem;
+      }
+      
+      /* Reducir tamaño de botones específicos */
+      button, a {
+        font-size: 0.875rem;
+        padding: 0.5rem 0.75rem;
+      }
+      
+      /* Botones del modal más pequeños */
+      .bg-blue-600, .bg-green-600, .border-yellow-400 {
+        padding: 0.5rem 0.75rem;
+        font-size: 0.875rem;
+      }
+      
+      /* Layout simplificado para imágenes */
+      .mobile-image-card {
+        width: 100%;
+        max-width: 100%;
+        background: rgba(55, 65, 81, 0.8);
+        border-radius: 0.75rem;
+        padding: 0.75rem;
+        border: 1px solid rgba(75, 85, 99, 0.5);
+      }
+      
+      /* Reducir tamaños de texto en móvil */
+      h1 {
+        font-size: 1.5rem;
+        margin-bottom: 1rem;
+      }
+      
+      h2 {
+        font-size: 1.25rem;
+      }
+      
+      h3 {
+        font-size: 1rem;
+      }
+      
+      h4 {
+        font-size: 0.875rem;
+      }
+      
+      p {
+        font-size: 0.875rem;
+      }
+      
+      /* Reducir padding y márgenes */
+      .px-4 {
+        padding-left: 0.75rem;
+        padding-right: 0.75rem;
+      }
+      
+      .py-8 {
+        padding-top: 1rem;
+        padding-bottom: 1rem;
+      }
+      
+      .mb-8 {
+        margin-bottom: 1.5rem;
+      }
+      
+      .space-y-4 > * + * {
+        margin-top: 0.75rem;
+      }
+    }
+    
+    /* Mejoras para tablets */
+    @media (min-width: 641px) and (max-width: 1024px) {
+      .tablet-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 1rem;
+      }
+    }
+  </style>
+</head>
+<body class="bg-gradient-to-b from-[#0f172a] via-[#1e293b] to-[#0f172a] text-white flex flex-col items-center min-h-screen px-4 py-8 overflow-y-auto">
+
+  <div class="max-w-2xl w-full">
+    <h1 class="text-3xl md:text-4xl font-bold mb-8 border-b border-gray-700 pb-2">Preguntas Frecuentes</h1>
+
+    <div class="space-y-4" id="faq-accordion">
+
+      <!-- 1. Definición de Ubify (para todos) -->
+      <details class="group border border-gray-700 rounded-lg overflow-hidden transition-all duration-300">
+        <summary class="flex justify-between items-center cursor-pointer px-4 py-3 text-white bg-gray-800 hover:bg-gray-700">
+          <span class="font-medium">¿Qué es Ubify?</span>
+          <svg class="w-5 h-5 transform group-open:rotate-180 transition-transform" fill="none" stroke="currentColor" stroke-width="2"
+            viewBox="0 0 24 24"><path d="M19 9l-7 7-7-7" /></svg>
+        </summary>
+        <div class="px-4 py-3 text-gray-300 bg-gray-900 border-t border-gray-700">
+          Plataforma digital para <strong>publicar y buscar propiedades en la zona</strong> de forma simple, segura y con máxima visibilidad.
+        </div>
+      </details>
+
+      <!-- 2. Llamado a acción principal (publicar) -->
+      <details class="group border border-gray-700 rounded-lg overflow-hidden transition-all duration-300">
+        <summary class="flex justify-between items-center cursor-pointer px-4 py-3 text-white bg-gray-800 hover:bg-gray-700">
+          <span class="font-medium">¿Cómo publico mi propiedad?</span>
+          <svg class="w-5 h-5 transform group-open:rotate-180 transition-transform" fill="none" stroke="currentColor" stroke-width="2"
+            viewBox="0 0 24 24"><path d="M19 9l-7 7-7-7" /></svg>
+        </summary>
+        <div class="px-4 py-3 text-gray-300 bg-gray-900 border-t border-gray-700">
+          Contáctanos por <a href="https://wa.me/5493735308294" class="text-green-400 underline">WhatsApp</a>, te guiamos para subir los datos (fotos, precio, descripción) y la publicamos en 24 hs. <strong>¡Es gratis!</strong>
+        </div>
+      </details>
+
+      <!-- 3. Atraer a usuarios (buscar propiedades) -->
+      <details class="group border border-gray-700 rounded-lg overflow-hidden transition-all duration-300">
+        <summary class="flex justify-between items-center cursor-pointer px-4 py-3 text-white bg-gray-800 hover:bg-gray-700">
+          <span class="font-medium">¿Puedo buscar propiedades en Ubify?</span>
+          <svg class="w-5 h-5 transform group-open:rotate-180 transition-transform" fill="none" stroke="currentColor" stroke-width="2"
+            viewBox="0 0 24 24"><path d="M19 9l-7 7-7-7" /></svg>
+        </summary>
+        <div class="px-4 py-3 text-gray-300 bg-gray-900 border-t border-gray-700">
+          ¡Sí! vas a poder encontrar <strong>casas, departamentos, terrenos y más</strong> con filtros personalizados.
+        </div>
+      </details>
+
+      <!-- 4. Generar confianza (seguridad) -->
+      <details class="group border border-gray-700 rounded-lg overflow-hidden transition-all duration-300">
+        <summary class="flex justify-between items-center cursor-pointer px-4 py-3 text-white bg-gray-800 hover:bg-gray-700">
+          <span class="font-medium">¿Es seguro usar Ubify?</span>
+          <svg class="w-5 h-5 transform group-open:rotate-180 transition-transform" fill="none" stroke="currentColor" stroke-width="2"
+            viewBox="0 0 24 24"><path d="M19 9l-7 7-7-7" /></svg>
+        </summary>
+        <div class="px-4 py-3 text-gray-300 bg-gray-900 border-t border-gray-700">
+          Protegemos tus datos y verificamos publicaciones. <strong>Recomendamos</strong> reunirse en lugares públicos y firmar contratos con asesoramiento legal.
+        </div>
+      </details>
+
+      <!-- 5. Costo (transparencia para propietarios) -->
+      <details class="group border border-gray-700 rounded-lg overflow-hidden transition-all duration-300">
+        <summary class="flex justify-between items-center cursor-pointer px-4 py-3 text-white bg-gray-800 hover:bg-gray-700">
+          <span class="font-medium">¿Cuánto cuesta publicar?</span>
+          <svg class="w-5 h-5 transform group-open:rotate-180 transition-transform" fill="none" stroke="currentColor" stroke-width="2"
+            viewBox="0 0 24 24"><path d="M19 9l-7 7-7-7" /></svg>
+        </summary>
+        <div class="px-4 py-3 text-gray-300 bg-gray-900 border-t border-gray-700">
+          <strong>Publicar es GRATIS</strong>. Si queres que tu publicación aparezca como DESTACADA (mayor visibilidad) podes consultar por el precio. <span class="block mt-1 text-green-400">¡Sin comisiones por venta/alquiler!</span>
+        </div>
+      </details>
+
+      <!-- 6. Datos necesarios (facilitar primer paso) -->
+      <details class="group border border-gray-700 rounded-lg overflow-hidden transition-all duration-300">
+        <summary class="flex justify-between items-center cursor-pointer px-4 py-3 text-white bg-gray-800 hover:bg-gray-700">
+          <span class="font-medium">¿Qué necesito para publicar?</span>
+          <svg class="w-5 h-5 transform group-open:rotate-180 transition-transform" fill="none" stroke="currentColor" stroke-width="2"
+            viewBox="0 0 24 24"><path d="M19 9l-7 7-7-7" /></svg>
+        </summary>
+        <div class="px-4 py-3 text-gray-300 bg-gray-900 border-t border-gray-700">
+          <ul class="list-disc pl-5 space-y-1">
+            <li>Fotos de la propiedad</li>
+            <li>Precio y ubicación</li>
+             <li>Detalles que consideres necesarios.</li>
+            <li>Descripción breve (ej: ambientes, características)</li>
+          </ul>
+          <p class="mt-2">¡Nosotros hacemos el resto!</p>
+        </div>
+      </details>
+
+      <!-- 7. Contacto directo (para usuarios) -->
+      <details class="group border border-gray-700 rounded-lg overflow-hidden transition-all duration-300">
+        <summary class="flex justify-between items-center cursor-pointer px-4 py-3 text-white bg-gray-800 hover:bg-gray-700">
+          <span class="font-medium">¿Cómo contacto al propietario?</span>
+          <svg class="w-5 h-5 transform group-open:rotate-180 transition-transform" fill="none" stroke="currentColor" stroke-width="2"
+            viewBox="0 0 24 24"><path d="M19 9l-7 7-7-7" /></svg>
+        </summary>
+        <div class="px-4 py-3 text-gray-300 bg-gray-900 border-t border-gray-700">
+          Cada publicación tiene un botón de <strong>WhatsApp o teléfono directo</strong> para consultar o agendar visitas.
+        </div>
+      </details>
+
+      <!-- 8. Cierre con contacto (funnel de conversión) -->
+      <details class="group border border-gray-700 rounded-lg overflow-hidden transition-all duration-300">
+        <summary class="flex justify-between items-center cursor-pointer px-4 py-3 text-white bg-gray-800 hover:bg-gray-700">
+          <span class="font-medium">¿Más preguntas?</span>
+          <svg class="w-5 h-5 transform group-open:rotate-180 transition-transform" fill="none" stroke="currentColor" stroke-width="2"
+            viewBox="0 0 24 24"><path d="M19 9l-7 7-7-7" /></svg>
+        </summary>
+        <div class="px-4 py-3 text-gray-300 bg-gray-900 border-t border-gray-700">
+          Contactanos por <a href="https://wa.me/5493735308294" class="text-green-400 underline font-semibold">WhatsApp</a> y te ayudamos al instante.
+        </div>
+      </details>
+
+    </div>
+
+    <!-- Botón de regreso con estilo destacado -->
+    <div class="mt-8 flex flex-col sm:flex-row gap-3 mobile-stack">
+      <a href="index.html" class="border border-yellow-400 text-yellow-400 hover:bg-yellow-400 hover:text-[#0f172a] font-semibold py-3 px-4 rounded-full transition duration-300 text-center mobile-touch-button">
+        Regresar
+      </a>
+  
+      <a href="https://wa.me/5493735308294" class="bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-4 rounded-full transition duration-300 text-center mobile-touch-button">
+        <span class="hidden sm:inline">Publicar mi propiedad</span>
+        <span class="sm:hidden">Publicar</span>
+      </a>
+    </div>
+
+  </div>
+
+  <script>
+    // Funciones para el modal del demo
+    function openDemoModal() {
+      document.getElementById('demoModal').classList.remove('hidden');
+      document.body.style.overflow = 'hidden'; // Previene scroll del body
+    }
+
+    function closeDemoModal() {
+      document.getElementById('demoModal').classList.add('hidden');
+      document.body.style.overflow = 'auto'; // Restaura scroll del body
+    }
+
+    // Cerrar modal al hacer clic fuera del contenido
+    document.getElementById('demoModal').addEventListener('click', function(e) {
+      if (e.target === this) {
+        closeDemoModal();
+      }
+    });
+
+    // Cerrar modal con tecla Escape
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape' && !document.getElementById('demoModal').classList.contains('hidden')) {
+        closeDemoModal();
+      }
+    });
+
+    // Funcionalidad del acordeón FAQ
+    const accordion = document.getElementById('faq-accordion');
+    accordion.querySelectorAll('details').forEach((targetDetail) => {
+      targetDetail.addEventListener('toggle', () => {
+        if (targetDetail.open) {
+          accordion.querySelectorAll('details').forEach((detail) => {
+            if (detail !== targetDetail) {
+              detail.removeAttribute('open');
+            }
+          });
+        }
+      });
+    });
+
+    // Funcionalidad para el modal de imágenes
+    let currentImageIndex = 0;
+    const images = [
+      { src: 'paginaprincipal.png', title: 'Interfaz de búsqueda' },
+      { src: 'detalleejemplo.png', title: 'Detalle de propiedad' },
+      { src: 'favoritos.png', title: 'Favoritos' },
+      { src: 'inicio.jpeg', title: 'Versión móvil - Inicio' },
+      { src: 'detalles.jpeg', title: 'Versión móvil - Detalles' },
+      { src: 'favoritos.jpeg', title: 'Versión móvil - Favoritos' }
+    ];
+
+    function openImageModal(src, title) {
+      // Encontrar el índice de la imagen actual
+      currentImageIndex = images.findIndex(img => img.src === src);
+      
+      // Si no se encuentra, usar el primer índice
+      if (currentImageIndex === -1) currentImageIndex = 0;
+      
+      // Actualizar la imagen y título en el modal
+      document.getElementById('modalImage').src = images[currentImageIndex].src;
+      document.getElementById('imageTitle').textContent = images[currentImageIndex].title;
+      
+      // Mostrar el modal
+      const modal = document.getElementById('imageModal');
+      modal.classList.remove('hidden');
+      modal.classList.add('active');
+      document.body.style.overflow = 'hidden';
+      
+      // Actualizar estado de botones de navegación
+      updateNavButtons();
+    }
+
+    function closeImageModal() {
+      const modal = document.getElementById('imageModal');
+      modal.classList.add('hidden');
+      modal.classList.remove('active');
+      document.body.style.overflow = 'auto';
+    }
+
+    function navigateImages(direction) {
+      if (direction === 'prev') {
+        currentImageIndex = (currentImageIndex - 1 + images.length) % images.length;
+      } else {
+        currentImageIndex = (currentImageIndex + 1) % images.length;
+      }
+      
+      document.getElementById('modalImage').src = images[currentImageIndex].src;
+      document.getElementById('imageTitle').textContent = images[currentImageIndex].title;
+      
+      updateNavButtons();
+    }
+
+    function updateNavButtons() {
+      // En este caso, no necesitamos deshabilitar botones ya que navegamos cíclicamente
+      // Pero podríamos agregar lógica aquí si queremos deshabilitar en los extremos
+    }
+
+    // Configurar eventos para navegación
+    document.getElementById('prevButton').addEventListener('click', () => navigateImages('prev'));
+    document.getElementById('nextButton').addEventListener('click', () => navigateImages('next'));
+    document.getElementById('prevButtonMobile').addEventListener('click', () => navigateImages('prev'));
+    document.getElementById('nextButtonMobile').addEventListener('click', () => navigateImages('next'));
+
+    // Cerrar modal de imagen al hacer clic fuera
+    document.getElementById('imageModal').addEventListener('click', function(e) {
+      if (e.target === this) {
+        closeImageModal();
+      }
+    });
+
+    // Navegación con teclado en el modal de imagen
+    document.addEventListener('keydown', function(e) {
+      const imageModal = document.getElementById('imageModal');
+      if (!imageModal.classList.contains('hidden')) {
+        if (e.key === 'Escape') {
+          closeImageModal();
+        } else if (e.key === 'ArrowLeft') {
+          navigateImages('prev');
+        } else if (e.key === 'ArrowRight') {
+          navigateImages('next');
+        }
+      }
+    });
+  </script>
+
+</body>
+</html>
