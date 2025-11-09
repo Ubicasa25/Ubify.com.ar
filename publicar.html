@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Publicar Propiedad - Ubify</title>
+  <meta name="description" content="Publica tu propiedad gratis en Ubify. Alquileres, ventas y terrenos en Villa Ángela, Chaco." />
+  <meta name="keywords" content="publicar propiedad, alquiler Villa Ángela, casas en venta Villa Ángela, propiedades Villa Ángela" />
+  <link rel="icon" type="image/png" href="logo-negro-sinfondo-pestaña.png" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&family=Inter:wght@400;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #e5e7eb;
+      color: #1f2937;
+    }
+    h1, h2, h3, h4, .font-playfair {
+      font-family: 'Poppins', sans-serif;
+      font-weight: 600;
+      color: #1f2937;
+    }
+    .font-inter {
+      font-family: 'Inter', sans-serif;
+    }
+    .font-poppins {
+      font-family: 'Poppins', sans-serif;
+    }
+    .text-shadow-subtle {
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+    }
+    .form-input {
+      background-color: #ffffff;
+      border: 1px solid #d1d5db;
+      border-radius: 0.5rem;
+      padding: 0.75rem;
+      font-size: 0.875rem;
+      color: #1f2937;
+      font-family: 'Inter', sans-serif;
+      transition: all 0.3s ease;
+    }
+    .form-input:focus {
+      border-color: #2563eb;
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+    }
+    .form-input::placeholder {
+      font-family: 'Inter', sans-serif;
+      font-weight: 400;
+      color: #9ca3af;
+    }
+    .form-input:hover {
+      border-color: #3b82f6;
+    }
+    select {
+      background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+      background-position: right 0.5rem center;
+      background-repeat: no-repeat;
+      background-size: 1.5em 1.5em;
+      padding-right: 2.5rem;
+      appearance: none;
+    }
+    .preview img {
+      transition: transform 0.2s ease;
+    }
+    .preview img:hover {
+      transform: scale(1.05);
+    }
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(4px);
+      justify-content: center;
+      align-items: center;
+      z-index: 2000;
+    }
+    .modal-content {
+      background: #fff;
+      padding: 2rem;
+      border-radius: 1rem;
+      max-width: 600px;
+      width: 90%;
+      max-height: 80vh;
+      overflow-y: auto;
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    }
+    @media (max-width: 640px) {
+      .modal-content {
+        padding: 1.5rem;
+        border-radius: 0.75rem;
+      }
+    }
+    .file-input-wrapper {
+      position: relative;
+      overflow: hidden;
+      display: inline-block;
+      width: 100%;
+    }
+    .file-input-wrapper input[type=file] {
+      position: absolute;
+      left: -9999px;
+    }
+    .file-input-label {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+      background: linear-gradient(to right, #2563eb, #1d4ed8);
+      color: white;
+      border-radius: 0.5rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-weight: 500;
+    }
+    .file-input-label:hover {
+      background: linear-gradient(to right, #1d4ed8, #1e40af);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.4);
+    }
+  </style>
+</head>
+<body class="bg-gray-100 text-gray-800 font-inter">
+  <!-- Header -->
+  <header class="bg-gradient-to-r from-white via-gray-50 to-blue-50 shadow-lg relative z-50">
+    <div class="max-w-6xl mx-auto px-3 sm:px-6 lg:px-8">
+      <!-- Mobile Layout -->
+      <div class="block sm:hidden">
+        <div class="flex items-center justify-between py-3">
+          <a href="index.html" class="flex items-center bg-white/80 backdrop-blur-sm text-gray-700 hover:text-blue-600 hover:bg-blue-50 px-4 py-2 rounded-xl font-medium text-sm transition-all duration-300 shadow-sm hover:shadow-md">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M9.707 14.707a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 1.414L7.414 9H15a1 1 0 110 2H7.414l2.293 2.293a1 1 0 010 1.414z" clip-rule="evenodd" />
+            </svg>
+            Volver al inicio
+          </a>
+          <div class="flex items-center space-x-3">
+            <a href="favorites.html" class="text-blue-600 hover:text-blue-800 transition-colors bg-blue-50 hover:bg-blue-100 px-3 py-2 rounded-lg font-medium text-sm">
+              Favoritos
+            </a>
+            <a href="faq.html" class="text-blue-600 hover:text-blue-800 transition-colors bg-blue-50 hover:bg-blue-100 px-3 py-2 rounded-lg font-medium text-sm">
+              Ayuda
+            </a>
+          </div>
+        </div>
+        <div class="pb-4 border-b border-gray-200">
+          <h1 class="text-lg font-montserrat font-semibold text-gray-800 mb-2 text-shadow-subtle leading-tight">
+            Bienvenidos a Ubify
+          </h1>
+          <p class="text-sm text-gray-600">
+            Completa el formulario para publicar tu propiedad.
+          </p>
+        </div>
+      </div>
+
+      <!-- Desktop Layout -->
+      <div class="hidden sm:block">
+        <div class="flex items-center justify-between py-4">
+          <a href="index.html" class="bg-white/80 backdrop-blur-sm text-gray-700 hover:text-blue-600 hover:bg-blue-50 px-6 py-3 rounded-xl font-semibold text-sm font-montserrat flex items-center transition-all duration-300 shadow-sm hover:shadow-md">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M9.707 14.707a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 1.414L7.414 9H15a1 1 0 110 2H7.414l2.293 2.293a1 1 0 010 1.414z" clip-rule="evenodd" />
+            </svg>
+            Volver al inicio
+          </a>
+          
+          <div class="flex-1 flex flex-col items-center text-center px-6">
+            <h1 class="text-xl lg:text-2xl font-montserrat font-semibold text-gray-800 mb-2 text-shadow-subtle">
+             Bienvenidos a Ubify
+            </h1>
+            <p class="text-sm lg:text-base text-gray-600">
+              Completa el formulario para publicar tu propiedad.
+            </p>
+          </div>
+          
+          <div class="flex items-center space-x-4">
+            <a href="favorites.html" class="text-blue-600 hover:text-blue-800 font-medium text-sm flex items-center transition-colors">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+              </svg>
+              Favoritos
+            </a>
+            <a href="faq.html" class="text-blue-600 hover:text-blue-800 font-medium text-sm flex items-center transition-colors">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              Ayuda
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="py-6 sm:py-12 px-3 sm:px-4 bg-gray-100">
+    <div class="max-w-3xl mx-auto">
+      <!-- Formulario -->
+      <div class="bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden">
+        <form 
+          id="formulario" 
+          method="POST"
+          action="https://script.google.com/macros/s/AKfycbyZ2audRCC0EtuZciKXrRhY0XltR8nnd1G7K11YdF8G500E9P0V-yC4xMy96xQu_XfM1Q/exec"
+          target="hidden_iframe" 
+          onsubmit="handleSubmit(event)"
+          class="p-4 sm:p-6 lg:p-8 space-y-4 sm:space-y-6"
+        >
+          <!-- Título -->
+          <div>
+            <label for="titulo" class="block text-sm font-semibold text-gray-700 mb-2">
+              Título <span class="text-red-500">*</span>
+            </label>
+            <input 
+              type="text" 
+              id="titulo"
+              name="titulo" 
+              placeholder="Ej: Casa nueva en zona céntrica"
+              required
+              class="form-input w-full"
+            />
+          </div>
+
+          <!-- Tipo y Operación en grid -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
+            <div>
+              <label for="tipo" class="block text-sm font-semibold text-gray-700 mb-2">
+                Tipo de propiedad <span class="text-red-500">*</span>
+              </label>
+              <select 
+                id="tipo"
+                name="tipo" 
+                required
+                class="form-input w-full"
+              >
+                <option value="">Seleccionar</option>
+                <option value="Casa">Casa</option>
+                <option value="Departamento">Departamento</option>
+                <option value="PH">PH</option>
+                <option value="Local">Local</option>
+                <option value="Terreno y lotes">Terreno y lotes</option>
+                <option value="Cochera">Cochera</option>
+                <option value="Oficina">Oficina</option>
+                <option value="Consultorio">Consultorio</option>
+                <option value="Quinta">Quinta</option>
+                <option value="Chacra">Chacra</option>
+                <option value="Galpón">Galpón</option>
+                <option value="Campo">Campo</option>
+                <option value="Hotel">Hotel</option>
+                <option value="Fondo de comercio">Fondo de comercio</option>
+                <option value="Edificio">Edificio</option>
+                <option value="Otro">Otro</option>
+              </select>
+            </div>
+
+            <div>
+              <label for="operacion" class="block text-sm font-semibold text-gray-700 mb-2">
+                Operación <span class="text-red-500">*</span>
+              </label>
+              <select 
+                id="operacion"
+                name="operacion" 
+                required
+                class="form-input w-full"
+              >
+                <option value="">Seleccionar</option>
+                <option value="Venta">Venta</option>
+                <option value="Alquiler">Alquiler</option>
+                <option value="Alquiler temporal">Alquiler temporal</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Precio y Moneda en grid -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
+            <div>
+              <label for="precio" class="block text-sm font-semibold text-gray-700 mb-2">
+                Precio <span class="text-red-500">*</span>
+              </label>
+              <input 
+                type="text" 
+                id="precio"
+                name="precio" 
+                placeholder="Número sin puntos ej: 2500000"
+                required
+                class="form-input w-full"
+              />
+            </div>
+
+            <div>
+              <label for="moneda" class="block text-sm font-semibold text-gray-700 mb-2">
+                Moneda <span class="text-red-500">*</span>
+              </label>
+              <select 
+                id="moneda"
+                name="moneda" 
+                required
+                class="form-input w-full"
+              >
+                <option value="">Seleccionar</option>
+                <option value="ARS">ARS (Pesos)</option>
+                <option value="USD">USD (Dólares)</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Ubicación -->
+          <div>
+            <label for="ubicacion" class="block text-sm font-semibold text-gray-700 mb-2">
+              Ubicación (Calle, número, ciudad y provincia) <span class="text-red-500">*</span>
+            </label>
+            <input 
+              type="text" 
+              id="ubicacion"
+              name="ubicacion" 
+              placeholder="Calle, número, ciudad y provincia"
+              required
+              class="form-input w-full"
+            />
+          </div>
+
+          <!-- Características -->
+          <div>
+            <label for="caracteristicas" class="block text-sm font-semibold text-gray-700 mb-2">
+              Características (M², dormitorios, baños)<span class="text-red-500">*</span>
+            </label>
+            <input 
+              type="text" 
+              id="caracteristicas"
+              name="caracteristicas" 
+              placeholder="Ej: 120 m², 3 dormitorios, 2 baños"
+              required
+              class="form-input w-full"
+            />
+          </div>
+
+          <!-- Descripción corta -->
+          <div>
+            <label for="descripcionCorta" class="block text-sm font-semibold text-gray-700 mb-2">
+              Descripción corta <span class="text-red-500">*</span>
+            </label>
+            <input 
+              type="text" 
+              id="descripcionCorta"
+              name="descripcionCorta" 
+              placeholder="Ej: Amplio departamento"
+              required
+              class="form-input w-full"
+            />
+          </div>
+
+          <!-- Descripción adicional -->
+          <div>
+            <label for="descripcion" class="block text-sm font-semibold text-gray-700 mb-2">
+              Descripción adicional <span class="text-red-500">*</span>
+            </label>
+            <textarea 
+              id="descripcion"
+              name="descripcion" 
+              placeholder="Agregá detalles importantes sobre la propiedad..."
+              rows="4"
+              required
+              class="form-input w-full resize-y"
+            ></textarea>
+          </div>
+
+          <!-- Contacto en grid -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
+            <div>
+              <label for="nombre" class="block text-sm font-semibold text-gray-700 mb-2">
+                Nombre de contacto <span class="text-red-500">*</span>
+              </label>
+              <input 
+                type="text" 
+                id="nombre"
+                name="nombre" 
+                placeholder="Tu nombre"
+                required
+                class="form-input w-full"
+              />
+            </div>
+
+            <div>
+              <label for="telefono" class="block text-sm font-semibold text-gray-700 mb-2">
+                Teléfono <span class="text-red-500">*</span>
+              </label>
+              <input 
+                type="text" 
+                id="telefono"
+                name="telefono" 
+                placeholder="Tu teléfono o WhatsApp"
+                required
+                class="form-input w-full"
+              />
+            </div>
+          </div>
+
+          <!-- Mensaje informativo sobre contacto -->
+          <div class="bg-blue-50 border-l-4 border-blue-500 p-4 rounded-r-lg">
+            <div class="flex items-start">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-blue-600 mr-2 mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              <div>
+                <p class="text-sm text-blue-800 font-medium mb-1">Importante</p>
+                <p class="text-sm text-blue-700">
+                  Nos contactaremos al número proporcionado para avisar cuando la propiedad haya sido aprobada y esté publicada en la plataforma.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Fotos -->
+          <div>
+            <label class="block text-sm font-semibold text-gray-700 mb-2">
+              Fotos de la propiedad <span class="text-red-500">*</span>
+            </label>
+            <p class="text-xs sm:text-sm text-gray-500 mb-3 flex items-center">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1 text-blue-600 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              <span>Se recomienda subir al menos <strong class="text-blue-600 font-semibold">3 imágenes</strong> para una mejor presentación de tu propiedad.</span>
+            </p>
+            <div class="file-input-wrapper">
+              <label for="fotos" class="file-input-label">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                </svg>
+                <span id="btnText">Seleccionar imágenes</span>
+              </label>
+              <input 
+                type="file" 
+                id="fotos" 
+                multiple 
+                accept="image/*"
+                class="hidden"
+              />
+            </div>
+            <div class="loader hidden" id="loader">
+              <div class="flex items-center justify-center mt-3 p-3 bg-blue-50 rounded-lg">
+                <div class="animate-spin rounded-full h-5 w-5 border-b-2 border-blue-600 mr-2"></div>
+                <span class="text-blue-600 text-sm font-medium">Subiendo imágenes...</span>
+              </div>
+            </div>
+            <div class="preview flex flex-wrap gap-3 mt-4" id="preview"></div>
+            <p id="imageCount" class="text-xs text-gray-500 mt-2 hidden">
+              <span id="countNumber">0</span> imagen(es) seleccionada(s)
+            </p>
+            <input type="hidden" name="fotos" id="fotosLinks">
+          </div>
+
+          <!-- Términos y Condiciones -->
+          <div class="flex items-start space-x-3 pt-2">
+            <input 
+              type="checkbox" 
+              id="aceptarTerminos" 
+              required
+              class="mt-1 h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+            />
+            <label for="aceptarTerminos" class="text-sm text-gray-700">
+              He leído y acepto los 
+              <button 
+                type="button"
+                id="abrirModal" 
+                class="text-blue-600 hover:text-blue-800 underline font-medium"
+              >
+                Términos y Condiciones
+              </button>
+            </label>
+          </div>
+
+          <!-- Mensajes de éxito y error -->
+          <div class="success hidden" id="successMsg">
+            <div class="bg-green-50 border border-green-200 text-green-800 px-4 py-3 rounded-lg flex items-center">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              Enviado correctamente
+            </div>
+          </div>
+
+          <div class="error hidden" id="errorMsg">
+            <div class="bg-red-50 border border-red-200 text-red-800 px-4 py-3 rounded-lg flex items-center">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              Cargá al menos una foto antes de enviar
+            </div>
+          </div>
+
+          <!-- Botón de envío -->
+          <button 
+            type="submit" 
+            class="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-semibold py-3 px-6 rounded-lg transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
+          >
+            Enviar publicación
+          </button>
+        </form>
+      </div>
+    </div>
+  </main>
+
+  <!-- Iframe oculto para el envío del formulario -->
+  <iframe name="hidden_iframe" class="hidden"></iframe>
+
+  <!-- Modal de Términos -->
+  <div class="modal" id="modalTerminos">
+    <div class="modal-content">
+      <h2 class="text-2xl font-poppins font-semibold text-gray-800 mb-4">Términos y Condiciones</h2>
+      <div class="space-y-4 text-gray-700 text-sm sm:text-base">
+        <p>
+          Al publicar una propiedad en Ubify, el usuario declara que la información ingresada es veraz y
+          que posee los derechos necesarios para ofrecer la propiedad. Ubify no se responsabiliza por
+          la veracidad de los datos ni por transacciones entre usuarios.
+        </p>
+        <p>
+          Las imágenes cargadas deben corresponder a la propiedad publicada y no violar derechos de autor
+          ni incluir contenido inapropiado. Ubify se reserva el derecho de eliminar publicaciones que
+          infrinjan estas condiciones.
+        </p>
+        <p>
+          Al aceptar estos términos, el usuario autoriza a Ubify a mostrar públicamente los datos de
+          contacto y la información de la propiedad en su plataforma.
+        </p>
+      </div>
+      <button 
+        onclick="cerrarModal()" 
+        class="mt-6 w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-semibold py-3 px-6 rounded-lg transition-all duration-300"
+      >
+        Cerrar
+      </button>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="bg-gray-100 py-8 sm:py-10 px-3 sm:px-4 border-t border-gray-200 mt-12">
+    <div class="max-w-6xl mx-auto grid grid-cols-1 gap-6 sm:gap-8 sm:grid-cols-3 text-center sm:text-left">
+      <div class="border-b sm:border-b-0 sm:border-r border-gray-300 pb-4 sm:pb-0 sm:pr-6">
+        <h3 class="text-lg sm:text-xl font-poppins font-semibold mb-3 sm:mb-4 text-gray-800">Ubify</h3>
+        <p class="text-gray-600 text-sm sm:text-base font-inter">Propiedades en toda la zona. Encontrá tu espacio o publicá el tuyo.</p>
+      </div>
+      <div class="border-b sm:border-b-0 sm:border-r border-gray-300 pb-4 sm:pb-0 sm:pr-6">
+        <h3 class="text-lg sm:text-xl font-poppins font-semibold mb-3 sm:mb-4 text-gray-800">Contáctanos</h3>
+        <p class="text-gray-600 text-sm sm:text-base font-inter mb-3">¿Querés publicar una propiedad?</p>
+        <a href="https://wa.me/+543735308294?text=Hola,%20quiero%20publicar%20una%20propiedad%20en%20Ubify" target="_blank" class="inline-flex items-center justify-center bg-green-500 text-white px-4 py-2 rounded-lg font-semibold text-sm sm:text-base hover:bg-green-600 transition duration-300 font-inter w-full sm:w-auto">
+          <img src="https://cdn.jsdelivr.net/npm/simple-icons@v10/icons/whatsapp.svg" alt="WhatsApp" class="w-4 h-4 sm:w-5 sm:h-5 mr-2 invert" />
+          Quiero publicar
+        </a>
+      </div>
+      <div>
+        <h3 class="text-lg sm:text-xl font-poppins font-semibold mb-3 sm:mb-4 text-gray-800">¡Seguinos!</h3>
+        <div class="flex justify-center sm:justify-start space-x-6">
+          <a href="https://www.facebook.com/" target="_blank" class="hover:scale-110 transition-transform">
+            <img src="https://cdn.jsdelivr.net/npm/simple-icons@v10/icons/facebook.svg" alt="Facebook" class="w-5 h-5 sm:w-6 sm:h-6 text-[#1877F2]" />
+          </a>
+          <a href="https://www.instagram.com/ubify.ar" target="_blank" class="hover:scale-110 transition-transform">
+            <img src="https://cdn.jsdelivr.net/npm/simple-icons@v10/icons/instagram.svg" alt="Instagram" class="w-5 h-5 sm:w-6 sm:h-6 text-[#E4405F]" />
+          </a>
+          <a href="https://wa.me/+543735308294?text=Hola,%20quiero%20más%20información%20sobre%20Ubify" target="_blank" class="hover:scale-110 transition-transform">
+            <img src="https://cdn.jsdelivr.net/npm/simple-icons@v10/icons/whatsapp.svg" alt="WhatsApp" class="w-5 h-5 sm:w-6 sm:h-6 text-[#25D366]" />
+          </a>
+        </div>
+        <div class="mt-4 text-center sm:text-left">
+          <a href="faq.html" class="inline-flex items-center text-blue-600 hover:text-blue-800 font-medium text-sm transition-colors">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            Preguntas frecuentes
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="max-w-4xl mx-auto mt-4 sm:mt-6 text-center text-gray-500 text-xs sm:text-sm font-inter">
+      <p>Ubify es una plataforma digital para la publicación de propiedades en toda la zona. No realiza intermediación inmobiliaria ni cobra comisiones por operaciones. Las negociaciones son responsabilidad exclusiva de las partes intervinientes.</p>
+    </div>
+    <p class="text-center text-gray-500 mt-2 text-xs sm:text-sm font-inter">© 2025 Ubify - Diseñado y desarrollado por Hostara.</p>
+  </footer>
+
+  <script>
+    const API_KEY = "3f059751d7037792d68c4c2f3c163040";
+    const fotosInput = document.getElementById("fotos");
+    const loader = document.getElementById("loader");
+    const preview = document.getElementById("preview");
+    const fotosLinksInput = document.getElementById("fotosLinks");
+    const successMsg = document.getElementById("successMsg");
+    const errorMsg = document.getElementById("errorMsg");
+    const form = document.getElementById("formulario");
+    const imageCount = document.getElementById("imageCount");
+    const countNumber = document.getElementById("countNumber");
+    const btnText = document.getElementById("btnText");
+
+    let fotosLinks = [];
+
+    // Subir imagen a ImgBB
+    async function subirImagen(archivo) {
+      const formData = new FormData();
+      formData.append("image", archivo);
+      const res = await fetch(`https://api.imgbb.com/1/upload?key=${API_KEY}`, {
+        method: "POST",
+        body: formData,
+      });
+      const data = await res.json();
+      if (!data.success) throw new Error("Error al subir imagen");
+      return data.data.url;
+    }
+
+    // Función para actualizar el contador de imágenes
+    function actualizarContador() {
+      if (fotosLinks.length > 0) {
+        countNumber.textContent = fotosLinks.length;
+        imageCount.classList.remove("hidden");
+        btnText.textContent = "Agregar más imágenes";
+      } else {
+        imageCount.classList.add("hidden");
+        btnText.textContent = "Seleccionar imágenes";
+      }
+    }
+
+    // Función para crear elemento de imagen en el preview
+    function crearElementoImagen(url, index) {
+      const imgWrapper = document.createElement("div");
+      imgWrapper.className = "relative group";
+      imgWrapper.dataset.index = index;
+      
+      const img = document.createElement("img");
+      img.src = url;
+      img.className = "w-24 h-24 sm:w-32 sm:h-32 object-cover rounded-lg border-2 border-gray-200 shadow-sm cursor-pointer";
+      img.alt = `Imagen ${index + 1}`;
+      
+      // Botón para eliminar imagen
+      const deleteBtn = document.createElement("button");
+      deleteBtn.type = "button";
+      deleteBtn.className = "absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity shadow-lg hover:bg-red-600";
+      deleteBtn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>';
+      deleteBtn.onclick = () => eliminarImagen(index);
+      
+      // Indicador de éxito
+      const checkmark = document.createElement("div");
+      checkmark.className = "absolute bottom-2 right-2 bg-green-500 rounded-full p-1";
+      checkmark.innerHTML = '<svg class="h-4 w-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>';
+      
+      imgWrapper.appendChild(img);
+      imgWrapper.appendChild(deleteBtn);
+      imgWrapper.appendChild(checkmark);
+      
+      return imgWrapper;
+    }
+
+    // Función para eliminar imagen
+    function eliminarImagen(index) {
+      fotosLinks.splice(index, 1);
+      fotosLinksInput.value = fotosLinks.join(", ");
+      actualizarPreview();
+      actualizarContador();
+    }
+
+    // Función para actualizar el preview
+    function actualizarPreview() {
+      preview.innerHTML = "";
+      fotosLinks.forEach((url, index) => {
+        const elemento = crearElementoImagen(url, index);
+        preview.appendChild(elemento);
+      });
+    }
+
+    fotosInput.addEventListener("change", async (e) => {
+      const archivos = Array.from(e.target.files);
+      if (!archivos.length) return;
+
+      loader.classList.remove("hidden");
+      
+      try {
+        const nuevasPromesas = archivos.map(subirImagen);
+        const nuevasUrls = await Promise.all(nuevasPromesas);
+        
+        // Agregar nuevas imágenes al array existente
+        fotosLinks = fotosLinks.concat(nuevasUrls);
+        fotosLinksInput.value = fotosLinks.join(", ");
+        
+        // Actualizar preview con todas las imágenes
+        actualizarPreview();
+        actualizarContador();
+        
+        console.log("✅ Links subidos:", fotosLinks);
+      } catch (err) {
+        console.error("❌ Error al subir imágenes:", err);
+        alert("Error al subir una o más imágenes. Por favor, intenta nuevamente.");
+      } finally {
+        loader.classList.add("hidden");
+      }
+      
+      // Permitir subir más sin reemplazar las anteriores
+      e.target.value = "";
+    });
+
+    function handleSubmit(event) {
+      if (fotosLinks.length === 0) {
+        event.preventDefault();
+        errorMsg.classList.remove("hidden");
+        errorMsg.classList.add("block");
+        setTimeout(() => {
+          errorMsg.classList.add("hidden");
+          errorMsg.classList.remove("block");
+        }, 5000);
+        return false;
+      }
+
+      setTimeout(() => {
+        form.reset();
+        preview.innerHTML = "";
+        fotosLinks = [];
+        fotosLinksInput.value = "";
+        imageCount.classList.add("hidden");
+        btnText.textContent = "Seleccionar imágenes";
+        successMsg.classList.remove("hidden");
+        successMsg.classList.add("block");
+        errorMsg.classList.add("hidden");
+        errorMsg.classList.remove("block");
+        setTimeout(() => {
+          successMsg.classList.add("hidden");
+          successMsg.classList.remove("block");
+        }, 5000);
+      }, 1500);
+      
+      return true;
+    }
+
+    // Modal de Términos
+    const modal = document.getElementById("modalTerminos");
+    document.getElementById("abrirModal").onclick = () => {
+      modal.style.display = "flex";
+    };
+    
+    function cerrarModal() {
+      modal.style.display = "none";
+    }
+    
+    window.onclick = (e) => {
+      if (e.target === modal) {
+        modal.style.display = "none";
+      }
+    };
+
+    // Cerrar modal con tecla ESC
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && modal.style.display === "flex") {
+        modal.style.display = "none";
+      }
+    });
+  </script>
+</body>
+</html>
