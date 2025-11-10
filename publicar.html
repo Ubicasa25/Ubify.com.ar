@@ -207,7 +207,6 @@
           id="formulario" 
           method="POST"
           action="https://script.google.com/macros/s/AKfycbyZ2audRCC0EtuZciKXrRhY0XltR8nnd1G7K11YdF8G500E9P0V-yC4xMy96xQu_XfM1Q/exec"
-          target="hidden_iframe" 
           onsubmit="handleSubmit(event)"
           class="p-4 sm:p-6 lg:p-8 space-y-4 sm:space-y-6"
         >
@@ -508,6 +507,43 @@
             </div>
           </div>
 
+          <!-- Mensaje de error del servidor -->
+          <div class="error hidden" id="serverErrorMsg">
+            <div class="bg-red-50 border border-red-200 text-red-800 px-4 py-3 rounded-lg relative">
+              <button 
+                type="button"
+                onclick="cerrarMensajeError()"
+                class="absolute top-2 right-2 text-red-600 hover:text-red-800 transition-colors"
+                aria-label="Cerrar mensaje"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+              <div class="flex items-start pr-6">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <div class="flex-1">
+                  <p class="font-semibold mb-1">Hubo un problema al cargar tu propiedad. No te preocupes, el fallo es nuestro.</p>
+                  <p class="text-sm">
+                    Por favor, contáctenos al 
+                    <a 
+                      href="https://wa.me/543735308294?text=Hola,%20tuve%20un%20problema%20al%20publicar%20mi%20propiedad%20en%20Ubify" 
+                      target="_blank" 
+                      class="text-blue-600 hover:text-blue-800 underline font-medium inline-flex items-center"
+                    >
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
+                      </svg>
+                      3735 308294
+                    </a>
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
           <!-- Botón de envío -->
           <button 
             type="submit" 
@@ -527,8 +563,6 @@
     </div>
   </main>
 
-  <!-- Iframe oculto para el envío del formulario -->
-  <iframe name="hidden_iframe" class="hidden"></iframe>
 
   <!-- Modal de Términos -->
   <div class="modal" id="modalTerminos">
@@ -618,6 +652,7 @@
     const submitBtn = document.getElementById("submitBtn");
     const submitBtnText = document.getElementById("submitBtnText");
     const submitBtnSpinner = document.getElementById("submitBtnSpinner");
+    const serverErrorMsg = document.getElementById("serverErrorMsg");
 
     let fotosLinks = [];
 
@@ -737,9 +772,11 @@
       submitBtnSpinner.classList.add("hidden");
     }
 
-    function handleSubmit(event) {
+    async function handleSubmit(event) {
+      event.preventDefault();
+      
+      // Validar que haya fotos
       if (fotosLinks.length === 0) {
-        event.preventDefault();
         errorMsg.classList.remove("hidden");
         errorMsg.classList.add("block");
         setTimeout(() => {
@@ -749,12 +786,84 @@
         return false;
       }
 
-      // Activar el estado de carga inmediatamente
+      // Ocultar mensajes anteriores
+      successMsg.classList.add("hidden");
+      successMsg.classList.remove("block");
+      serverErrorMsg.classList.add("hidden");
+      serverErrorMsg.classList.remove("block");
+      errorMsg.classList.add("hidden");
+      errorMsg.classList.remove("block");
+
+      // Activar el estado de carga
       activarEstadoCarga();
 
-      // El formulario se enviará al iframe oculto
-      // Esperamos un tiempo para simular el envío y luego mostrar el mensaje de éxito
-      setTimeout(() => {
+      try {
+        // Recopilar datos del formulario
+        const formData = new FormData(form);
+        
+        // Crear objeto con los datos
+        const data = {
+          titulo: formData.get("titulo"),
+          tipo: formData.get("tipo"),
+          operacion: formData.get("operacion"),
+          precio: formData.get("precio"),
+          moneda: formData.get("moneda"),
+          ubicacion: formData.get("ubicacion"),
+          caracteristicas: formData.get("caracteristicas"),
+          descripcionCorta: formData.get("descripcionCorta"),
+          descripcion: formData.get("descripcion"),
+          nombre: formData.get("nombre"),
+          telefono: formData.get("telefono"),
+          fotos: fotosLinks.join(", ")
+        };
+
+        // Crear FormData para enviar
+        const submitData = new FormData();
+        Object.keys(data).forEach(key => {
+          submitData.append(key, data[key]);
+        });
+
+        // Enviar datos a Google Apps Script con timeout
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 30000); // 30 segundos de timeout
+
+        const response = await fetch(form.action, {
+          method: "POST",
+          body: submitData,
+          signal: controller.signal
+        });
+
+        clearTimeout(timeoutId);
+
+        // Intentar leer la respuesta (puede estar vacía, texto o JSON)
+        let responseText = "";
+        try {
+          responseText = await response.text();
+        } catch (e) {
+          console.warn("No se pudo leer la respuesta como texto:", e);
+        }
+
+        // Verificar si la respuesta es exitosa
+        if (!response.ok) {
+          throw new Error(`Error del servidor: ${response.status} ${response.statusText}`);
+        }
+
+        // Si la respuesta contiene palabras clave de error, lanzar error
+        const lowerResponse = responseText.toLowerCase();
+        if (lowerResponse.includes("error") || 
+            lowerResponse.includes("failed") ||
+            lowerResponse.includes("falló") ||
+            lowerResponse.includes("exception") ||
+            lowerResponse.includes("denied") ||
+            lowerResponse.includes("unauthorized")) {
+          throw new Error("Error al procesar la solicitud en el servidor");
+        }
+
+        // Si la respuesta está vacía o es muy corta, podría ser una redirección exitosa
+        // En Google Apps Script, una respuesta exitosa suele ser HTML de redirección o texto vacío
+        // Si llegamos aquí y response.ok es true, asumimos que fue exitoso
+
+        // Si todo está bien, mostrar mensaje de éxito
         form.reset();
         preview.innerHTML = "";
         fotosLinks = [];
@@ -763,15 +872,30 @@
         btnText.textContent = "Seleccionar imágenes";
         successMsg.classList.remove("hidden");
         successMsg.classList.add("block");
-        errorMsg.classList.add("hidden");
-        errorMsg.classList.remove("block");
-        
-        // Desactivar el estado de carga después de mostrar el mensaje de éxito
         desactivarEstadoCarga();
-        // El mensaje de éxito permanecerá visible hasta que el usuario lo cierre
-      }, 1500);
+
+      } catch (error) {
+        console.error("Error al enviar el formulario:", error);
+        
+        // Verificar el tipo de error
+        if (error.name === 'AbortError') {
+          console.error("Timeout: La solicitud tardó demasiado");
+        } else if (error.message && error.message.includes('Failed to fetch')) {
+          console.error("Error de red o CORS: No se pudo conectar con el servidor");
+        } else if (error.message) {
+          console.error("Error:", error.message);
+        }
+        
+        // Mostrar mensaje de error personalizado en todos los casos de error
+        // Esto incluye: errores de red, CORS, timeout, errores del servidor, etc.
+        serverErrorMsg.classList.remove("hidden");
+        serverErrorMsg.classList.add("block");
+        desactivarEstadoCarga();
+        
+        // No resetear el formulario en caso de error, para que el usuario no pierda los datos
+      }
       
-      return true;
+      return false;
     }
 
     // Modal de Términos
@@ -807,7 +931,15 @@
       successMsg.classList.add("hidden");
       successMsg.classList.remove("block");
     }
+
+    // Función para cerrar el mensaje de error del servidor
+    function cerrarMensajeError() {
+      serverErrorMsg.classList.add("hidden");
+      serverErrorMsg.classList.remove("block");
+    }
+
+
+
   </script>
 </body>
 </html>
-
