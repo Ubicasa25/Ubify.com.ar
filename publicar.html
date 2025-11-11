@@ -637,310 +637,325 @@
     <p class="text-center text-gray-500 mt-2 text-xs sm:text-sm font-inter">© 2025 Ubify - Diseñado y desarrollado por Hostara.</p>
   </footer>
 
-  <script>
-    const API_KEY = "3f059751d7037792d68c4c2f3c163040";
-    const fotosInput = document.getElementById("fotos");
-    const loader = document.getElementById("loader");
-    const preview = document.getElementById("preview");
-    const fotosLinksInput = document.getElementById("fotosLinks");
-    const successMsg = document.getElementById("successMsg");
-    const errorMsg = document.getElementById("errorMsg");
-    const form = document.getElementById("formulario");
-    const imageCount = document.getElementById("imageCount");
-    const countNumber = document.getElementById("countNumber");
-    const btnText = document.getElementById("btnText");
-    const submitBtn = document.getElementById("submitBtn");
-    const submitBtnText = document.getElementById("submitBtnText");
-    const submitBtnSpinner = document.getElementById("submitBtnSpinner");
-    const serverErrorMsg = document.getElementById("serverErrorMsg");
+ <script>
+  const API_KEY = "3f059751d7037792d68c4c2f3c163040";
+  const fotosInput = document.getElementById("fotos");
+  const loader = document.getElementById("loader");
+  const preview = document.getElementById("preview");
+  const fotosLinksInput = document.getElementById("fotosLinks");
+  const successMsg = document.getElementById("successMsg");
+  const errorMsg = document.getElementById("errorMsg");
+  const form = document.getElementById("formulario");
+  const imageCount = document.getElementById("imageCount");
+  const countNumber = document.getElementById("countNumber");
+  const btnText = document.getElementById("btnText");
+  const submitBtn = document.getElementById("submitBtn");
+  const submitBtnText = document.getElementById("submitBtnText");
+  const submitBtnSpinner = document.getElementById("submitBtnSpinner");
+  const serverErrorMsg = document.getElementById("serverErrorMsg");
 
-    let fotosLinks = [];
+  let fotosLinks = [];
 
-    // Subir imagen a ImgBB
-    async function subirImagen(archivo) {
-      const formData = new FormData();
-      formData.append("image", archivo);
-      const res = await fetch(`https://api.imgbb.com/1/upload?key=${API_KEY}`, {
-        method: "POST",
-        body: formData,
-      });
-      const data = await res.json();
-      if (!data.success) throw new Error("Error al subir imagen");
-      return data.data.url;
+  // 🔄 Convertir imagen a WebP antes de subir
+  async function convertirAWebP(archivo) {
+    return new Promise((resolve, reject) => {
+      const lector = new FileReader();
+      lector.onload = (e) => {
+        const img = new Image();
+        img.onload = () => {
+          const canvas = document.createElement("canvas");
+          const maxSize = 1280; // opcional: límite de tamaño (ancho o alto máx)
+          let { width, height } = img;
+
+          // Redimensionar manteniendo proporciones si es muy grande
+          if (width > height && width > maxSize) {
+            height *= maxSize / width;
+            width = maxSize;
+          } else if (height > width && height > maxSize) {
+            width *= maxSize / height;
+            height = maxSize;
+          }
+
+          canvas.width = width;
+          canvas.height = height;
+          const ctx = canvas.getContext("2d");
+          ctx.drawImage(img, 0, 0, width, height);
+
+          // Convertir a Blob formato WebP
+          canvas.toBlob(
+            (blob) => {
+              if (!blob) {
+                reject(new Error("No se pudo generar el archivo WebP"));
+                return;
+              }
+              const webpFile = new File(
+                [blob],
+                archivo.name.replace(/\.[^/.]+$/, "") + ".webp",
+                { type: "image/webp" }
+              );
+              resolve(webpFile);
+            },
+            "image/webp",
+            0.8 // calidad (0.1 a 1.0)
+          );
+        };
+        img.onerror = reject;
+        img.src = e.target.result;
+      };
+      lector.onerror = reject;
+      lector.readAsDataURL(archivo);
+    });
+  }
+
+  // 🚀 Subir imagen a ImgBB (ya convertida a WebP)
+  async function subirImagen(archivo) {
+    const webpFile = await convertirAWebP(archivo);
+    const formData = new FormData();
+    formData.append("image", webpFile);
+
+    const res = await fetch(`https://api.imgbb.com/1/upload?key=${API_KEY}`, {
+      method: "POST",
+      body: formData,
+    });
+    const data = await res.json();
+    if (!data.success) throw new Error("Error al subir imagen");
+    return data.data.url;
+  }
+
+  // Función para actualizar el contador de imágenes
+  function actualizarContador() {
+    if (fotosLinks.length > 0) {
+      countNumber.textContent = fotosLinks.length;
+      imageCount.classList.remove("hidden");
+      btnText.textContent = "Agregar más imágenes";
+    } else {
+      imageCount.classList.add("hidden");
+      btnText.textContent = "Seleccionar imágenes";
     }
+  }
 
-    // Función para actualizar el contador de imágenes
-    function actualizarContador() {
-      if (fotosLinks.length > 0) {
-        countNumber.textContent = fotosLinks.length;
-        imageCount.classList.remove("hidden");
-        btnText.textContent = "Agregar más imágenes";
-      } else {
-        imageCount.classList.add("hidden");
-        btnText.textContent = "Seleccionar imágenes";
-      }
-    }
+  // Crear imagen en el preview
+  function crearElementoImagen(url, index) {
+    const imgWrapper = document.createElement("div");
+    imgWrapper.className = "relative group";
+    imgWrapper.dataset.index = index;
 
-    // Función para crear elemento de imagen en el preview
-    function crearElementoImagen(url, index) {
-      const imgWrapper = document.createElement("div");
-      imgWrapper.className = "relative group";
-      imgWrapper.dataset.index = index;
-      
-      const img = document.createElement("img");
-      img.src = url;
-      img.className = "w-24 h-24 sm:w-32 sm:h-32 object-cover rounded-lg border-2 border-gray-200 shadow-sm cursor-pointer";
-      img.alt = `Imagen ${index + 1}`;
-      
-      // Botón para eliminar imagen
-      const deleteBtn = document.createElement("button");
-      deleteBtn.type = "button";
-      deleteBtn.className = "absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity shadow-lg hover:bg-red-600";
-      deleteBtn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>';
-      deleteBtn.onclick = () => eliminarImagen(index);
-      
-      // Indicador de éxito
-      const checkmark = document.createElement("div");
-      checkmark.className = "absolute bottom-2 right-2 bg-green-500 rounded-full p-1";
-      checkmark.innerHTML = '<svg class="h-4 w-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>';
-      
-      imgWrapper.appendChild(img);
-      imgWrapper.appendChild(deleteBtn);
-      imgWrapper.appendChild(checkmark);
-      
-      return imgWrapper;
-    }
+    const img = document.createElement("img");
+    img.src = url;
+    img.className =
+      "w-24 h-24 sm:w-32 sm:h-32 object-cover rounded-lg border-2 border-gray-200 shadow-sm cursor-pointer";
+    img.alt = `Imagen ${index + 1}`;
 
-    // Función para eliminar imagen
-    function eliminarImagen(index) {
-      fotosLinks.splice(index, 1);
+    const deleteBtn = document.createElement("button");
+    deleteBtn.type = "button";
+    deleteBtn.className =
+      "absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity shadow-lg hover:bg-red-600";
+    deleteBtn.innerHTML =
+      '<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>';
+    deleteBtn.onclick = () => eliminarImagen(index);
+
+    const checkmark = document.createElement("div");
+    checkmark.className = "absolute bottom-2 right-2 bg-green-500 rounded-full p-1";
+    checkmark.innerHTML =
+      '<svg class="h-4 w-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>';
+
+    imgWrapper.appendChild(img);
+    imgWrapper.appendChild(deleteBtn);
+    imgWrapper.appendChild(checkmark);
+
+    return imgWrapper;
+  }
+
+  function eliminarImagen(index) {
+    fotosLinks.splice(index, 1);
+    fotosLinksInput.value = fotosLinks.join(", ");
+    actualizarPreview();
+    actualizarContador();
+  }
+
+  function actualizarPreview() {
+    preview.innerHTML = "";
+    fotosLinks.forEach((url, index) => {
+      const elemento = crearElementoImagen(url, index);
+      preview.appendChild(elemento);
+    });
+  }
+
+  fotosInput.addEventListener("change", async (e) => {
+    const archivos = Array.from(e.target.files);
+    if (!archivos.length) return;
+
+    loader.classList.remove("hidden");
+
+    try {
+      const nuevasPromesas = archivos.map(subirImagen);
+      const nuevasUrls = await Promise.all(nuevasPromesas);
+
+      fotosLinks = fotosLinks.concat(nuevasUrls);
       fotosLinksInput.value = fotosLinks.join(", ");
+
       actualizarPreview();
       actualizarContador();
+
+      console.log("✅ Links subidos:", fotosLinks);
+    } catch (err) {
+      console.error("❌ Error al subir imágenes:", err);
+      alert("Error al subir una o más imágenes. Por favor, intenta nuevamente.");
+    } finally {
+      loader.classList.add("hidden");
     }
 
-    // Función para actualizar el preview
-    function actualizarPreview() {
-      preview.innerHTML = "";
-      fotosLinks.forEach((url, index) => {
-        const elemento = crearElementoImagen(url, index);
-        preview.appendChild(elemento);
-      });
-    }
+    e.target.value = "";
+  });
 
-    fotosInput.addEventListener("change", async (e) => {
-      const archivos = Array.from(e.target.files);
-      if (!archivos.length) return;
+  function activarEstadoCarga() {
+    submitBtn.disabled = true;
+    submitBtnText.textContent = "Enviando...";
+    submitBtnSpinner.classList.remove("hidden");
+  }
 
-      loader.classList.remove("hidden");
-      
-      try {
-        const nuevasPromesas = archivos.map(subirImagen);
-        const nuevasUrls = await Promise.all(nuevasPromesas);
-        
-        // Agregar nuevas imágenes al array existente
-        fotosLinks = fotosLinks.concat(nuevasUrls);
-        fotosLinksInput.value = fotosLinks.join(", ");
-        
-        // Actualizar preview con todas las imágenes
-        actualizarPreview();
-        actualizarContador();
-        
-        console.log("✅ Links subidos:", fotosLinks);
-      } catch (err) {
-        console.error("❌ Error al subir imágenes:", err);
-        alert("Error al subir una o más imágenes. Por favor, intenta nuevamente.");
-      } finally {
-        loader.classList.add("hidden");
-      }
-      
-      // Permitir subir más sin reemplazar las anteriores
-      e.target.value = "";
-    });
+  function desactivarEstadoCarga() {
+    submitBtn.disabled = false;
+    submitBtnText.textContent = "Enviar publicación";
+    submitBtnSpinner.classList.add("hidden");
+  }
 
-    // Función para activar el estado de carga del botón
-    function activarEstadoCarga() {
-      submitBtn.disabled = true;
-      submitBtnText.textContent = "Enviando...";
-      submitBtnSpinner.classList.remove("hidden");
-    }
+  async function handleSubmit(event) {
+    event.preventDefault();
 
-    // Función para desactivar el estado de carga del botón
-    function desactivarEstadoCarga() {
-      submitBtn.disabled = false;
-      submitBtnText.textContent = "Enviar publicación";
-      submitBtnSpinner.classList.add("hidden");
-    }
-
-    async function handleSubmit(event) {
-      event.preventDefault();
-      
-      // Validar que haya fotos
-      if (fotosLinks.length === 0) {
-        errorMsg.classList.remove("hidden");
-        errorMsg.classList.add("block");
-        setTimeout(() => {
-          errorMsg.classList.add("hidden");
-          errorMsg.classList.remove("block");
-        }, 5000);
-        return false;
-      }
-
-      // Ocultar mensajes anteriores
-      successMsg.classList.add("hidden");
-      successMsg.classList.remove("block");
-      serverErrorMsg.classList.add("hidden");
-      serverErrorMsg.classList.remove("block");
-      errorMsg.classList.add("hidden");
-      errorMsg.classList.remove("block");
-
-      // Activar el estado de carga
-      activarEstadoCarga();
-
-      try {
-        // Recopilar datos del formulario
-        const formData = new FormData(form);
-        
-        // Crear objeto con los datos
-        const data = {
-          titulo: formData.get("titulo"),
-          tipo: formData.get("tipo"),
-          operacion: formData.get("operacion"),
-          precio: formData.get("precio"),
-          moneda: formData.get("moneda"),
-          ubicacion: formData.get("ubicacion"),
-          caracteristicas: formData.get("caracteristicas"),
-          descripcionCorta: formData.get("descripcionCorta"),
-          descripcion: formData.get("descripcion"),
-          nombre: formData.get("nombre"),
-          telefono: formData.get("telefono"),
-          fotos: fotosLinks.join(", ")
-        };
-
-        // Crear FormData para enviar
-        const submitData = new FormData();
-        Object.keys(data).forEach(key => {
-          submitData.append(key, data[key]);
-        });
-
-        // Enviar datos a Google Apps Script con timeout
-        const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 30000); // 30 segundos de timeout
-
-        const response = await fetch(form.action, {
-          method: "POST",
-          body: submitData,
-          signal: controller.signal
-        });
-
-        clearTimeout(timeoutId);
-
-        // Intentar leer la respuesta (puede estar vacía, texto o JSON)
-        let responseText = "";
-        try {
-          responseText = await response.text();
-        } catch (e) {
-          console.warn("No se pudo leer la respuesta como texto:", e);
-        }
-
-        // Verificar si la respuesta es exitosa
-        if (!response.ok) {
-          throw new Error(`Error del servidor: ${response.status} ${response.statusText}`);
-        }
-
-        // Si la respuesta contiene palabras clave de error, lanzar error
-        const lowerResponse = responseText.toLowerCase();
-        if (lowerResponse.includes("error") || 
-            lowerResponse.includes("failed") ||
-            lowerResponse.includes("falló") ||
-            lowerResponse.includes("exception") ||
-            lowerResponse.includes("denied") ||
-            lowerResponse.includes("unauthorized")) {
-          throw new Error("Error al procesar la solicitud en el servidor");
-        }
-
-        // Si la respuesta está vacía o es muy corta, podría ser una redirección exitosa
-        // En Google Apps Script, una respuesta exitosa suele ser HTML de redirección o texto vacío
-        // Si llegamos aquí y response.ok es true, asumimos que fue exitoso
-
-        // Si todo está bien, mostrar mensaje de éxito
-        form.reset();
-        preview.innerHTML = "";
-        fotosLinks = [];
-        fotosLinksInput.value = "";
-        imageCount.classList.add("hidden");
-        btnText.textContent = "Seleccionar imágenes";
-        successMsg.classList.remove("hidden");
-        successMsg.classList.add("block");
-        desactivarEstadoCarga();
-
-      } catch (error) {
-        console.error("Error al enviar el formulario:", error);
-        
-        // Verificar el tipo de error
-        if (error.name === 'AbortError') {
-          console.error("Timeout: La solicitud tardó demasiado");
-        } else if (error.message && error.message.includes('Failed to fetch')) {
-          console.error("Error de red o CORS: No se pudo conectar con el servidor");
-        } else if (error.message) {
-          console.error("Error:", error.message);
-        }
-        
-        // Mostrar mensaje de error personalizado en todos los casos de error
-        // Esto incluye: errores de red, CORS, timeout, errores del servidor, etc.
-        serverErrorMsg.classList.remove("hidden");
-        serverErrorMsg.classList.add("block");
-        desactivarEstadoCarga();
-        
-        // No resetear el formulario en caso de error, para que el usuario no pierda los datos
-      }
-      
+    if (fotosLinks.length === 0) {
+      errorMsg.classList.remove("hidden");
+      errorMsg.classList.add("block");
+      setTimeout(() => {
+        errorMsg.classList.add("hidden");
+        errorMsg.classList.remove("block");
+      }, 5000);
       return false;
     }
 
-    // Modal de Términos
-    const modal = document.getElementById("modalTerminos");
-    
-    function abrirModal() {
-      modal.style.display = "flex";
-      document.body.classList.add("modal-open");
-    }
-    
-    function cerrarModal() {
-      modal.style.display = "none";
-      document.body.classList.remove("modal-open");
-    }
-    
-    document.getElementById("abrirModal").onclick = abrirModal;
-    
-    window.onclick = (e) => {
-      if (e.target === modal) {
-        cerrarModal();
+    successMsg.classList.add("hidden");
+    successMsg.classList.remove("block");
+    serverErrorMsg.classList.add("hidden");
+    serverErrorMsg.classList.remove("block");
+    errorMsg.classList.add("hidden");
+    errorMsg.classList.remove("block");
+
+    activarEstadoCarga();
+
+    try {
+      const formData = new FormData(form);
+      const data = {
+        titulo: formData.get("titulo"),
+        tipo: formData.get("tipo"),
+        operacion: formData.get("operacion"),
+        precio: formData.get("precio"),
+        moneda: formData.get("moneda"),
+        ubicacion: formData.get("ubicacion"),
+        caracteristicas: formData.get("caracteristicas"),
+        descripcionCorta: formData.get("descripcionCorta"),
+        descripcion: formData.get("descripcion"),
+        nombre: formData.get("nombre"),
+        telefono: formData.get("telefono"),
+        fotos: fotosLinks.join(", "),
+      };
+
+      const submitData = new FormData();
+      Object.keys(data).forEach((key) => {
+        submitData.append(key, data[key]);
+      });
+
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 30000);
+
+      const response = await fetch(form.action, {
+        method: "POST",
+        body: submitData,
+        signal: controller.signal,
+      });
+
+      clearTimeout(timeoutId);
+
+      let responseText = "";
+      try {
+        responseText = await response.text();
+      } catch (e) {
+        console.warn("No se pudo leer la respuesta como texto:", e);
       }
-    };
 
-    // Cerrar modal con tecla ESC
-    document.addEventListener("keydown", (e) => {
-      if (e.key === "Escape" && modal.style.display === "flex") {
-        cerrarModal();
+      if (!response.ok) {
+        throw new Error(`Error del servidor: ${response.status} ${response.statusText}`);
       }
-    });
 
-    // Función para cerrar el mensaje de éxito
-    function cerrarMensajeExito() {
-      successMsg.classList.add("hidden");
-      successMsg.classList.remove("block");
+      const lowerResponse = responseText.toLowerCase();
+      if (
+        lowerResponse.includes("error") ||
+        lowerResponse.includes("failed") ||
+        lowerResponse.includes("falló") ||
+        lowerResponse.includes("exception") ||
+        lowerResponse.includes("denied") ||
+        lowerResponse.includes("unauthorized")
+      ) {
+        throw new Error("Error al procesar la solicitud en el servidor");
+      }
+
+      form.reset();
+      preview.innerHTML = "";
+      fotosLinks = [];
+      fotosLinksInput.value = "";
+      imageCount.classList.add("hidden");
+      btnText.textContent = "Seleccionar imágenes";
+      successMsg.classList.remove("hidden");
+      successMsg.classList.add("block");
+      desactivarEstadoCarga();
+    } catch (error) {
+      console.error("Error al enviar el formulario:", error);
+      serverErrorMsg.classList.remove("hidden");
+      serverErrorMsg.classList.add("block");
+      desactivarEstadoCarga();
     }
 
-    // Función para cerrar el mensaje de error del servidor
-    function cerrarMensajeError() {
-      serverErrorMsg.classList.add("hidden");
-      serverErrorMsg.classList.remove("block");
+    return false;
+  }
+
+  // Modal de Términos
+  const modal = document.getElementById("modalTerminos");
+
+  function abrirModal() {
+    modal.style.display = "flex";
+    document.body.classList.add("modal-open");
+  }
+
+  function cerrarModal() {
+    modal.style.display = "none";
+    document.body.classList.remove("modal-open");
+  }
+
+  document.getElementById("abrirModal").onclick = abrirModal;
+
+  window.onclick = (e) => {
+    if (e.target === modal) {
+      cerrarModal();
     }
+  };
 
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && modal.style.display === "flex") {
+      cerrarModal();
+    }
+  });
 
+  function cerrarMensajeExito() {
+    successMsg.classList.add("hidden");
+    successMsg.classList.remove("block");
+  }
 
-  </script>
+  function cerrarMensajeError() {
+    serverErrorMsg.classList.add("hidden");
+    serverErrorMsg.classList.remove("block");
+  }
+</script>
+
 </body>
 </html>
+
 
