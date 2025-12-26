@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Publicar Emprendimiento - Ubify</title>
+  <meta name="description" content="Publica tu emprendimiento gratis en Ubify. Llega a más clientes en Villa Ángela." />
+  <link rel="icon" type="image/png" href="favicon-pestaña-original.png" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&family=Inter:wght@400;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <meta name="robots" content="noindex, nofollow">
+  <style>
+    body { font-family: 'Inter', sans-serif; background-color: #f3f4f6; color: #1f2937; }
+    h1, h2, h3, h4 { font-family: 'Poppins', sans-serif; font-weight: 600; }
+    
+    .form-input {
+      background-color: #ffffff;
+      border: 1px solid #d1d5db;
+      border-radius: 0.5rem;
+      padding: 0.55rem 0.75rem; 
+      font-size: 0.875rem;
+      transition: all 0.3s ease;
+    }
+    .form-input:focus {
+      border-color: #2563eb;
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+    }
+    
+    select {
+      background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+      background-position: right 0.5rem center;
+      background-repeat: no-repeat;
+      background-size: 1.5em 1.5em;
+      padding-right: 2.5rem;
+      appearance: none;
+    }
+
+    .file-input-wrapper { position: relative; overflow: hidden; display: inline-block; width: 100%; }
+    .file-input-wrapper input[type=file] { position: absolute; left: -9999px; }
+    .file-input-label {
+      display: flex; align-items: center; justify-content: center; padding: 0.75rem 1rem;
+      background: linear-gradient(to right, #2563eb, #1d4ed8);
+      color: white; border-radius: 0.5rem; cursor: pointer; transition: all 0.3s ease; font-weight: 500;
+    }
+    .file-input-label:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(37, 99, 235, 0.4); }
+
+    /* Modal Styles */
+    .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); backdrop-filter: blur(4px); justify-content: center; align-items: center; z-index: 2000; }
+    .modal-content { background: #fff; padding: 1.5rem; border-radius: 1rem; max-width: 600px; width: 90%; max-height: 80vh; overflow-y: auto; }
+    
+    .modal-open { overflow: hidden; height: 100vh; }
+    
+    .fade-enter { opacity: 0; transform: translateY(-10px); }
+    .fade-enter-active { opacity: 1; transform: translateY(0); transition: all 0.3s ease; }
+  </style>
+</head>
+<body class="bg-gray-100 text-gray-800 font-inter">
+
+   <header class="bg-gradient-to-r from-white via-gray-50 to-blue-50 shadow-lg relative z-50">
+    <div class="max-w-6xl mx-auto px-3 sm:px-6 lg:px-8">
+      
+      <div class="block sm:hidden">
+        <div class="flex items-center justify-between py-3">
+          <a href="emprendimientos.html" class="flex items-center bg-white/80 backdrop-blur-sm text-gray-700 hover:text-blue-600 hover:bg-blue-50 px-4 py-2 rounded-xl font-medium text-sm transition-all duration-300 shadow-sm hover:shadow-md">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M9.707 14.707a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 1.414L7.414 9H15a1 1 0 110 2H7.414l2.293 2.293a1 1 0 010 1.414z" clip-rule="evenodd" />
+            </svg>
+            Ver Emprendimientos
+          </a>
+        
+          <a href="faq.html" class="text-blue-600 hover:text-blue-800 transition-colors bg-blue-50 hover:bg-blue-100 px-3 py-2 rounded-lg font-medium text-sm">
+            Ayuda
+          </a>
+        </div>
+        
+        <div class="pb-4 border-b border-gray-200 text-center">
+          <h1 class="text-lg font-montserrat font-semibold text-gray-800 mb-1 text-shadow-subtle leading-tight">
+            Bienvenidos a Ubify
+          </h1>
+          <p class="text-sm text-gray-600">
+            Completa el formulario para publicar tu emprendimiento.
+          </p>
+        </div>
+      </div>
+
+      <div class="hidden sm:block">
+        <div class="flex items-center justify-between py-4">
+          <a href="emprendimientos.html" class="bg-white/80 backdrop-blur-sm text-gray-700 hover:text-blue-600 hover:bg-blue-50 px-6 py-3 rounded-xl font-semibold text-sm font-montserrat flex items-center transition-all duration-300 shadow-sm hover:shadow-md">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M9.707 14.707a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 1.414L7.414 9H15a1 1 0 110 2H7.414l2.293 2.293a1 1 0 010 1.414z" clip-rule="evenodd" />
+            </svg>
+            Ver Emprendimientos
+          </a>
+          
+          <div class="flex-1 flex flex-col items-center text-center px-6">
+            <h1 class="text-xl lg:text-2xl font-montserrat font-semibold text-gray-800 mb-1 text-shadow-subtle">
+             Bienvenidos a Ubify
+            </h1>
+            <p class="text-sm lg:text-base text-gray-600">
+              Completa el formulario para publicar tu emprendimiento
+            </p>
+          </div>
+          
+          <a href="faq.html" class="text-blue-600 hover:text-blue-800 font-medium text-sm flex items-center transition-colors px-4 py-2">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            Ayuda
+          </a>
+        </div>
+      </div>
+      
+    </div>
+  </header>
+
+  <main class="py-6 px-3 sm:px-4"> 
+    <div class="max-w-3xl mx-auto">
+      
+      <div class="text-center mb-6 sm:mb-8">
+        <h2 class="text-xl sm:text-3xl font-bold text-gray-900 mb-2">¡Sumate al buscador más completo de la ciudad!</h2>
+      </div>
+
+      <div class="bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden">
+        
+        <form 
+          id="formulario" 
+          method="POST"
+          action="https://script.google.com/macros/s/AKfycbzAaRatcRGT29jm5z670k_ksdwyCcemtZw4lzfSmqriHgpFAQ8aPRkScMGIk-F3ufyy/exec"
+          onsubmit="handleSubmit(event)"
+          class="p-4 sm:p-6 lg:p-8 space-y-4 sm:space-y-6" 
+        > 
+        <div>
+            <label for="nombre" class="block text-sm font-semibold text-gray-700 mb-1 sm:mb-2">
+              Nombre del Emprendimiento <span class="text-red-500">*</span>
+            </label>
+            <input type="text" id="nombre" name="nombre" placeholder="Ej: Burger King" required class="form-input w-full" />
+          </div>
+
+          <div>
+            <label for="categoria" class="block text-sm font-semibold text-gray-700 mb-1 sm:mb-2">
+              Categoría <span class="text-red-500">*</span>
+            </label>
+            <select id="categoria" name="categoria" required class="form-input w-full">
+              <option value="">Seleccionar Categoría</option>
+              <option value="Gastronomía">Gastronomía</option>
+              <option value="Indumentaria">Indumentaria</option>
+              <option value="Accesorios">Accesorios</option>
+              <option value="Servicios">Servicios</option>
+              <option value="Tecnología">Tecnología</option>
+              <option value="Hogar">Hogar</option>
+              <option value="Belleza">Belleza</option>
+              <option value="Otro">Otro (Especificar)</option> </select>
+            
+            <div id="otraCategoriaContainer" class="hidden mt-2 fade-enter">
+                <label for="otraCategoria" class="block text-sm font-semibold text-blue-600 mb-1">
+                  ¿Cuál es tu rubro o categoría? <span class="text-red-500">*</span>
+                </label>
+                <input type="text" id="otraCategoria" placeholder="Ej: Juguetería..." class="form-input w-full border-blue-300 bg-blue-50 focus:bg-white" />
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4"> 
+            <div>
+              <label for="whatsapp" class="block text-sm font-semibold text-gray-700 mb-1 sm:mb-2">
+                WhatsApp (sin 0 ni 15) <span class="text-red-500">*</span>
+              </label>
+              <input type="number" id="whatsapp" name="whatsapp" placeholder="Ej: 3735000000" required class="form-input w-full" />
+            </div>
+            <div>
+              <label for="direccion" class="block text-sm font-semibold text-gray-700 mb-1 sm:mb-2">
+                Dirección / Ubicación <span class="text-red-500">*</span>
+              </label>
+              <input type="text" id="direccion" name="direccion" placeholder="Ej: San Martín 123" required class="form-input w-full" />
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+            <div>
+              <label for="instagram" class="block text-sm font-semibold text-gray-700 mb-1 sm:mb-2">
+                Usuario de Instagram <span class="text-red-500">*</span>
+              </label>
+              <input 
+                type="text" 
+                id="instagram" 
+                name="instagram" 
+                placeholder="Ej: tu_empresa" 
+                required 
+                class="form-input w-full" 
+              />
+              <p class="text-xs text-gray-500 mt-1">Ingresa solo tu usuario (sin @).</p>
+            </div>
+            <div>
+              <label for="web" class="block text-sm font-semibold text-gray-700 mb-1 sm:mb-2">
+                Sitio Web (Opcional)
+              </label>
+              <input type="url" id="web" name="web" placeholder="https://miweb.com" class="form-input w-full" />
+            </div>
+          </div>
+
+          <div>
+            <label for="descripcion" class="block text-sm font-semibold text-gray-700 mb-1 sm:mb-2">
+              ¿Qué ofrecen? <span class="text-red-500">*</span>
+            </label>
+            <textarea id="descripcion" name="descripcion" placeholder="Descripción breve (Horarios de atención, productos que ofrecen o servicios, etc.)" rows="3" required class="form-input w-full resize-y"></textarea>
+          </div>
+
+          <div>
+            <label class="block text-sm font-semibold text-gray-700 mb-1 sm:mb-2">
+              Logo del Emprendimiento <span class="text-red-500">*</span>
+            </label>
+            <div class="file-input-wrapper">
+              <label for="fotos" class="file-input-label">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                </svg>
+                <span id="btnText">Subir Logo</span>
+              </label>
+              <input type="file" id="fotos" accept="image/*" class="hidden" />
+            </div>
+            
+            <div class="loader hidden" id="loader">
+              <div class="flex items-center justify-center mt-3 p-2 bg-blue-50 rounded-lg">
+                <div class="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-600 mr-2"></div>
+                <span class="text-blue-600 text-xs font-medium">Subiendo...</span>
+              </div>
+            </div>
+
+            <div class="preview flex flex-wrap gap-3 mt-3" id="preview"></div>
+            <input type="hidden" name="logo" id="fotosLinks">
+          </div>
+
+          <div class="flex items-start space-x-2 pt-1">
+            <input type="checkbox" id="aceptarTerminos" required class="mt-1 h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded" />
+            <label for="aceptarTerminos" class="text-xs sm:text-sm text-gray-700">
+              Acepto los <button type="button" id="abrirModal" class="text-blue-600 hover:text-blue-800 underline font-medium">Términos y Condiciones</button>
+            </label>
+          </div>
+
+          <div class="success hidden" id="successMsg">
+            <div class="bg-green-50 border border-green-200 text-green-800 px-4 py-3 rounded-lg flex items-start">
+              <svg class="h-5 w-5 mr-2 mt-0.5 text-green-600 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+              <div>
+                <p class="font-semibold text-sm">¡Enviado!</p>
+                <p class="text-xs">Te contactaremos pronto al número de telefono ingresado.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="error hidden" id="errorMsg">
+            <div class="bg-red-50 border border-red-200 text-red-800 px-4 py-2 text-sm rounded-lg">Sube el logo por favor.</div>
+          </div>
+          
+          <div class="error hidden" id="serverErrorMsg">
+            <div class="bg-red-50 border border-red-200 text-red-800 px-4 py-2 text-sm rounded-lg">Error al enviar. Intenta de nuevo.</div>
+          </div>
+
+          <button type="submit" id="submitBtn" class="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-bold py-3 px-6 rounded-lg transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-1 disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center">
+            <span id="submitBtnText">Enviar Solicitud</span>
+            <span id="submitBtnSpinner" class="hidden ml-2">
+              <svg class="animate-spin h-5 w-5 text-white" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+            </span>
+          </button>
+
+        </form>
+      </div>
+    </div>
+  </main>
+
+  <div class="modal" id="modalTerminos">
+    <div class="modal-content">
+      <h2 class="text-xl font-bold mb-3">Términos y Condiciones</h2>
+      <p class="text-gray-600 text-sm mb-4">Al enviar este formulario, declaras que eres el propietario o representante autorizado del emprendimiento. Ubify se reserva el derecho de admisión y publicación.</p>
+      <button onclick="cerrarModal()" class="w-full bg-blue-600 text-white py-2 rounded-lg text-sm font-medium">Cerrar</button>
+    </div>
+  </div>
+
+  <footer id="mainFooter" class="bg-gray-100 py-8 sm:py-10 px-3 sm:px-4 border-t border-gray-200 mt-auto">
+    <div class="max-w-6xl mx-auto grid grid-cols-1 gap-6 sm:gap-8 sm:grid-cols-3 text-center sm:text-left">
+      <div class="border-b sm:border-b-0 sm:border-r border-gray-300 pb-4 sm:pb-0 sm:pr-6">
+        <h3 class="text-lg sm:text-xl font-montserrat font-semibold mb-3 sm:mb-4 text-gray-800">Ubify | Emprendimientos</h3>
+        <p class="text-gray-600 text-sm sm:text-base font-inter">Emprendimientos de toda la ciudad. Encontrá un emprendimiento o publicá el tuyo.</p>
+      </div>
+      <div class="border-b sm:border-b-0 sm:border-r border-gray-300 pb-4 sm:pb-0 sm:pr-6">
+        <h3 class="text-lg sm:text-xl font-montserrat font-semibold mb-3 sm:mb-4 text-gray-800">Contáctanos</h3>
+        <p class="text-gray-600 text-sm sm:text-base font-inter mb-3">¿Querés publicar tu emprendimiento?</p>
+        <a href="https://wa.me/+543735308294?text=Hola,%20quiero%20publicar%20mi%20emprendimiento%20en%20Ubify" target="_blank" class="inline-flex items-center justify-center bg-green-500 text-white px-4 py-2 rounded-lg font-semibold text-sm sm:text-base hover:bg-green-600 transition duration-300 font-inter w-full sm:w-auto">
+          <img src="https://cdn.jsdelivr.net/npm/simple-icons@v10/icons/whatsapp.svg" alt="WhatsApp" class="w-4 h-4 sm:w-5 sm:h-5 mr-2 invert" />
+          Quiero publicar
+        </a>
+      </div>
+      <div>
+        <h3 class="text-lg sm:text-xl font-montserrat font-semibold mb-3 sm:mb-4 text-gray-800">¡Seguinos!</h3>
+        <div class="flex justify-center sm:justify-start space-x-6">
+          <a href="https://www.facebook.com/" target="_blank" class="hover:scale-110 transition-transform">
+            <img src="https://cdn.jsdelivr.net/npm/simple-icons@v10/icons/facebook.svg" alt="Facebook" class="w-5 h-5 sm:w-6 sm:h-6 text-[#1877F2]" />
+          </a>
+          <a href="https://www.instagram.com/ubify.ar" target="_blank" class="hover:scale-110 transition-transform">
+            <img src="https://cdn.jsdelivr.net/npm/simple-icons@v10/icons/instagram.svg" alt="Instagram" class="w-5 h-5 sm:w-6 sm:h-6 text-[#E4405F]" />
+          </a>
+          <a href="https://wa.me/+543735308294?text=Hola,%20quiero%20más%20información%20sobre%20Ubify" target="_blank" class="hover:scale-110 transition-transform">
+            <img src="https://cdn.jsdelivr.net/npm/simple-icons@v10/icons/whatsapp.svg" alt="WhatsApp" class="w-5 h-5 sm:w-6 sm:h-6 text-[#25D366]" />
+          </a>
+        </div>
+        <div class="mt-4 text-center sm:text-left">
+          <a href="faq.html" class="inline-flex items-center text-blue-600 hover:text-blue-800 font-medium text-sm transition-colors">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            Preguntas frecuentes
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="max-w-4xl mx-auto mt-4 sm:mt-6 text-center text-gray-500 text-xs sm:text-sm font-inter">
+     <p>Ubify es una vitrina digital gratuita para potenciar el comercio local. Actúa únicamente como medio de difusión y no interviene en pedidos, cobros ni envíos. Las transacciones son responsabilidad exclusiva del comprador y el vendedor.</p>
+    </div>
+    <p class="text-center text-gray-500 mt-2 text-xs sm:text-sm font-inter">© 2025 Ubify - Diseñado y desarrollado por Hostara.</p>
+  </footer>
+
+  <script>
+    const API_KEY = "b2fea72412df6a82adf27032257cf86b";
+    
+    const categorySelect = document.getElementById('categoria');
+    const otraCategoriaDiv = document.getElementById('otraCategoriaContainer');
+    const otraCategoriaInput = document.getElementById('otraCategoria');
+    const fotosInput = document.getElementById("fotos");
+    const loader = document.getElementById("loader");
+    const preview = document.getElementById("preview");
+    const fotosLinksInput = document.getElementById("fotosLinks");
+    const successMsg = document.getElementById("successMsg");
+    const errorMsg = document.getElementById("errorMsg");
+    const serverErrorMsg = document.getElementById("serverErrorMsg");
+    const form = document.getElementById("formulario");
+    const submitBtn = document.getElementById("submitBtn");
+    const submitBtnText = document.getElementById("submitBtnText");
+    const submitBtnSpinner = document.getElementById("submitBtnSpinner");
+    
+    let fotosLinks = [];
+
+    categorySelect.addEventListener('change', function() {
+        if (this.value === 'Otro') {
+            otraCategoriaDiv.classList.remove('hidden');
+            setTimeout(() => otraCategoriaDiv.classList.add('fade-enter-active'), 10);
+            otraCategoriaInput.required = true;
+        } else {
+            otraCategoriaDiv.classList.remove('fade-enter-active');
+            otraCategoriaDiv.classList.add('hidden');
+            otraCategoriaInput.required = false;
+            otraCategoriaInput.value = '';
+        }
+    });
+
+    async function subirImagen(archivo) {
+      const formData = new FormData();
+      formData.append("image", archivo);
+      const res = await fetch(`https://api.imgbb.com/1/upload?key=${API_KEY}`, { method: "POST", body: formData });
+      const data = await res.json();
+      if (!data.success) throw new Error("Error al subir imagen");
+      return data.data.url;
+    }
+
+    fotosInput.addEventListener("change", async (e) => {
+      const archivos = Array.from(e.target.files);
+      if (!archivos.length) return;
+      
+      fotosLinks = []; 
+      preview.innerHTML = "";
+
+      loader.classList.remove("hidden");
+      try {
+        const url = await subirImagen(archivos[0]); 
+        fotosLinks.push(url);
+        fotosLinksInput.value = url; 
+
+        const img = document.createElement("img");
+        img.src = url;
+        img.className = "w-20 h-20 object-contain border rounded bg-white p-1"; // Reducido tamaño preview
+        preview.appendChild(img);
+        document.getElementById("btnText").textContent = "Logo cargado";
+        
+      } catch (err) {
+        console.error(err);
+        alert("Error al subir el logo.");
+      } finally {
+        loader.classList.add("hidden");
+      }
+    });
+
+    async function handleSubmit(event) {
+      event.preventDefault();
+      
+      if (fotosLinks.length === 0) {
+        errorMsg.classList.remove("hidden");
+        return false;
+      }
+
+      successMsg.classList.add("hidden");
+      serverErrorMsg.classList.add("hidden");
+      errorMsg.classList.add("hidden");
+      
+      submitBtn.disabled = true;
+      submitBtnText.textContent = "Enviando...";
+      submitBtnSpinner.classList.remove("hidden");
+
+      try {
+        const formData = new FormData(form);
+        let categoriaFinal = formData.get("categoria");
+        if (categoriaFinal === 'Otro') {
+            categoriaFinal = document.getElementById('otraCategoria').value;
+        }
+        
+        // --- LOGICA MODIFICADA PARA INSTAGRAM ---
+        let instagramUsuario = formData.get("instagram");
+        if (instagramUsuario) {
+          // 1. Limpiamos el @ y espacios extra
+          let limpio = instagramUsuario.replace('@', '').trim();
+          // 2. Concatenamos para crear la URL completa
+          instagramUsuario = `https://www.instagram.com/${limpio}`;
+        }
+
+        const data = {
+            nombre: formData.get("nombre"),
+            categoria: categoriaFinal,
+            whatsapp: formData.get("whatsapp"),
+            direccion: formData.get("direccion"),
+            instagram: instagramUsuario, // Aquí ya va la URL completa
+            web: formData.get("web"),
+            descripcion: formData.get("descripcion"),
+            logo: fotosLinksInput.value
+        };
+
+        const submitData = new FormData();
+        Object.keys(data).forEach(key => submitData.append(key, data[key]));
+
+        const response = await fetch(form.action, {
+            method: "POST",
+            body: submitData
+        });
+
+        if (!response.ok) throw new Error("Error server");
+
+        form.reset();
+        preview.innerHTML = "";
+        fotosLinks = [];
+        document.getElementById("btnText").textContent = "Subir Logo";
+        otraCategoriaDiv.classList.add('hidden');
+        successMsg.classList.remove("hidden");
+
+      } catch (error) {
+        console.error(error);
+        serverErrorMsg.classList.remove("hidden");
+      } finally {
+        submitBtn.disabled = false;
+        submitBtnText.textContent = "Enviar Solicitud";
+        submitBtnSpinner.classList.add("hidden");
+      }
+      return false;
+    }
+
+    const modal = document.getElementById("modalTerminos");
+    const body = document.body;
+
+    document.getElementById("abrirModal").onclick = () => {
+        modal.style.display = "flex";
+        body.classList.add("modal-open");
+    };
+
+    function cerrarModal() {
+        modal.style.display = "none";
+        body.classList.remove("modal-open");
+    }
+
+    window.onclick = (e) => {
+        if (e.target === modal) cerrarModal();
+    }
+  </script>
+</body>
+</html>
